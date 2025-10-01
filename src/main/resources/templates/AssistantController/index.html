@@ -34,6 +34,21 @@
             color: #333;
             margin-bottom: 10px;
             font-size: 2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .memory-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
         
         .subtitle {
@@ -163,8 +178,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>✈️ Airline Loyalty Assistant</h1>
-        <p class="subtitle">Ask me anything about airline loyalty programs, miles, and rewards!</p>
+        <h1>
+            ✈️ Airline Loyalty Assistant
+            {#if hasMemory}
+            <span class="memory-badge">🧠 Memory Active</span>
+            {/if}
+        </h1>
+        <p class="subtitle">I remember our conversation! Ask me anything about airline loyalty programs, miles, and rewards.</p>
         
         <form method="post" action="/">
             <div class="form-group">
@@ -197,11 +217,25 @@
         <div class="examples">
             <h3>Try asking about:</h3>
             <ul>
-                <li>How do I earn elite status?</li>
+                <li>Hello, my name is Bob. How can I earn elite status?</li>
                 <li>What are the benefits of Gold tier membership?</li>
                 <li>Can I transfer miles to family members?</li>
                 <li>How do I upgrade my seat using miles?</li>
                 <li>What partner airlines can I use my miles on?</li>
+            </ul>
+            <p style="margin-top: 15px; color: #667eea; font-size: 0.95em;">
+                💡 <strong>Tip:</strong> I'll remember your name and preferences throughout our conversation!
+            </p>
+        </div>
+        {/if}
+        
+        {#if answer}
+        <div class="examples">
+            <h3>Continue the conversation:</h3>
+            <ul>
+                <li>What about [related question]?</li>
+                <li>Can you tell me more about that?</li>
+                <li>What's my name? (test memory!)</li>
             </ul>
         </div>
         {/if}
