@@ -1,16 +1,32 @@
 # Airline Loyalty Assistant
 
-A demo application showcasing AI-powered airline loyalty program assistance using Quarkus, Kotlin, and LangChain4j.
+A demo application showcasing AI-powered airline loyalty program assistance using Quarkus, Kotlin, and LangChain4j with Model Context Protocol (MCP).
 
 ## Features
 
 - 🤖 AI-powered question answering about airline loyalty programs
-- ✈️ Information about miles, rewards, and elite status
+- ✈️ Real-time information from Delta and United websites via MCP tools
+- ⚙️ **MCP Server** - Exposes airline loyalty program tools via Model Context Protocol
 - 🎨 Simple, clean web UI with server-side rendering
 - ⚡ Fast startup and hot reload with Quarkus
-- 🔧 Built with modern technology: Kotlin + Quarkus + LangChain4j
+- 🐳 **Docker ready** - Pre-built images available on Docker Hub
+- 🔧 Built with modern technology: Kotlin + Quarkus + LangChain4j + MCP
 
-## Prerequisites
+## Quick Start with Docker 🐳
+
+The fastest way to run the application is using Docker:
+
+```bash
+docker run -p 8080:8080 \
+  -e QUARKUS_LANGCHAIN4J_OPENAI_API_KEY=your-openai-api-key \
+  jbaruchs/codepocalypse-airline-assistant:latest
+```
+
+Then open http://localhost:8080 in your browser.
+
+**See [DOCKER.md](DOCKER.md) for complete Docker deployment instructions.**
+
+## Prerequisites (for local development)
 
 - Java 21+
 - Maven 3.9+ (or use the included wrapper)
@@ -65,25 +81,38 @@ The application will be available at: <http://localhost:8080>
 
 ## Architecture
 
-This application follows the Quarkus LangChain4j programming model:
+This application follows the Quarkus LangChain4j programming model with MCP integration:
 
-- **`AirlineLoyaltyAssistant.kt`** - AI Service interface with `@RegisterAiService` annotation
+- **`AirlineLoyaltyAssistant.kt`** - AI Service interface with `@RegisterAiService` and `@McpToolBox` annotations
+- **`AirlineMcpTools.kt`** - MCP server tools for fetching real-time airline data
 - **`AssistantController.kt`** - REST controller handling web requests
 - **`index.html`** - Qute template for server-side rendering
-- **`application.properties`** - Configuration for OpenAI and Quarkus
+- **`application.properties`** - Configuration for OpenAI, MCP, and Quarkus
+
+### MCP Server
+
+The application exposes an MCP server at `/mcp/sse` that provides airline loyalty program tools:
+
+- `getDeltaMedallionQualification` - Fetches Delta SkyMiles qualification requirements
+- `getUnitedPremierQualification` - Fetches United MileagePlus qualification requirements
+- `compareAirlinePrograms` - Compares both programs
+
+You can connect external MCP clients to `http://localhost:8080/mcp/sse` to use these tools.
 
 ## Demo Stages
 
 This project is organized into branches for different demo stages:
 
 - `stage-00-init` - Initial project setup
-- `stage-01-basic-chat` - Basic chatbot (current)
-- Future stages will add: tools, RAG, memory, etc.
+- `stage-01-basic-chat` - Basic chatbot with conversation memory
+- `stage-02-tools` - Added external tool integration
+- `stage-03-rag` - RAG implementation with document loading
+- `stage-04-mcp` - Model Context Protocol integration (current)
 
 Switch between stages using:
 
 ```bash
-git checkout stage-01-basic-chat
+git checkout stage-04-mcp
 ```
 
 ## Packaging and Running the Application
