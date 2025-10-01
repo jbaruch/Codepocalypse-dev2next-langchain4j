@@ -1,5 +1,6 @@
 package dev2next.langchain4j
 
+import dev.langchain4j.guardrail.InputGuardrailException
 import io.quarkus.logging.Log
 import io.quarkus.qute.Template
 import io.quarkus.qute.TemplateInstance
@@ -11,15 +12,13 @@ import jakarta.ws.rs.core.MediaType
  * Main controller for the Airline Loyalty Assistant web application.
  * Handles both GET and POST requests for the UI.
  * Uses a single conversation memory for the entire application.
+ * Guardrails are applied automatically using vanilla LangChain4j @InputGuardrails annotation.
  */
 @Path("/")
 class AssistantController {
 
     @Inject
     lateinit var assistant: AirlineLoyaltyAssistant
-
-    @Inject
-    lateinit var guardrail: AirlineLoyaltyInputGuardrail
 
     @Inject
     @io.quarkus.qute.Location("AssistantController/index.html")
@@ -47,6 +46,7 @@ class AssistantController {
      * Processes the user's question and returns the response.
      * Handles form submission with question parameter.
      * Maintains conversation context using memory.
+     * Guardrails are applied automatically by Quarkus LangChain4j before calling the LLM.
      */
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -62,31 +62,38 @@ class AssistantController {
         }
 
         return try {
-            // First, validate with guardrail
-            val userMessage = dev.langchain4j.data.message.UserMessage.from(question)
-            val guardrailResult = guardrail.validate(userMessage)
-            
-            // Check if guardrail rejected the input (check for success)
-            val result = guardrailResult.result()
-            if (result != dev.langchain4j.guardrail.GuardrailResult.Result.SUCCESS) {
-                Log.warn("Guardrail rejected question")
-                // Get the failure message from the result
-                val errorMessage = guardrailResult.successfulText() 
-                    ?: "Your question is not related to airline loyalty programs."
-                return index.data("question", question)
-                    .data("answer", "")
-                    .data("error", errorMessage)
-                    .data("hasMemory", true)
-            }
-            
             Log.info("Processing question with memory: ${question.take(50)}...")
             // Pass memory ID to maintain conversation context
+            // Guardrails are applied automatically by Quarkus before the LLM is called
             val answer = assistant.chat(MEMORY_ID, question)
             Log.info("Response generated successfully with conversation context")
             
             index.data("question", question)
                 .data("answer", answer)
                 .data("error", "")
+                .data("hasMemory", true)
+        } catch (e: InputGuardrailException) {
+            // Guardrail rejected the question
+            Log.warn("Guardrail rejected question: ${e.message}")
+            
+            // Extract the friendly message from the exception
+            // The exception message format is: "The guardrail <class name> failed with this message: <actual message>"
+            val friendlyMessage = e.message?.let { msg ->
+                val prefix = "failed with this message: "
+                val index = msg.indexOf(prefix)
+                if (index != -1) {
+                    msg.substring(index + prefix.length)
+                } else {
+                    msg
+                }
+            } ?: "Your question is not related to airline loyalty programs."
+            
+            // Convert newlines to HTML line breaks for proper display
+            val htmlFormattedMessage = friendlyMessage.replace("\n", "<br>")
+            
+            index.data("question", question)
+                .data("answer", "")
+                .data("error", htmlFormattedMessage)
                 .data("hasMemory", true)
         } catch (e: Exception) {
             Log.error("Error processing question", e)

@@ -1,9 +1,9 @@
 package dev2next.langchain4j
 
 import dev.langchain4j.data.message.UserMessage
+import dev.langchain4j.model.chat.ChatModel
 import dev.langchain4j.guardrail.InputGuardrail
 import dev.langchain4j.guardrail.InputGuardrailResult
-import dev.langchain4j.model.chat.ChatModel
 import io.quarkus.logging.Log
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Inject
@@ -11,8 +11,8 @@ import jakarta.inject.Inject
 /**
  * Input guardrail that validates user questions are related to airline loyalty programs.
  * 
- * This is a VANILLA LangChain4j InputGuardrail implementation (not Quarkus-specific) as per project instructions.
- * Uses the Quarkus-managed ChatModel to invoke the LLM for intelligent validation.
+ * This is a vanilla LangChain4j InputGuardrail implementation (Quarkus deprecated their guardrails).
+ * Uses Quarkus CDI to inject the ChatModel for LLM-based validation.
  * 
  * Questions about Delta SkyMiles, United MileagePlus, elite status, miles, points, etc. are allowed.
  * Questions about unrelated topics are rejected with a helpful message.

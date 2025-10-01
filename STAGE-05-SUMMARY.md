@@ -15,10 +15,11 @@ Stage 05 successfully migrated from OpenAI cloud to a local Docker Desktop Model
 ### 2. LLM-Based Input Guardrails
 - **Implementation**: Vanilla LangChain4j `InputGuardrail` interface
 - **Validation Method**: LLM-based (not keyword matching)
-- **Integration**: Manual validation in `AssistantController` (not annotation-based)
+- **Integration**: Declarative via `@InputGuardrails` annotation on AI Service interface
+- **Exception Handling**: Catches `InputGuardrailException` with formatted error messages
 - **Behavior**: 
   - Airline loyalty questions → Pass guardrail → Answer with assistant
-  - Non-airline questions → Blocked with helpful message
+  - Non-airline questions → Blocked with helpful message (HTML-formatted with line breaks)
   - Validation errors → Fail-open (allow question through)
 
 ### 3. UI Updates
@@ -40,6 +41,7 @@ quarkus.langchain4j.openai.timeout=60s
 
 ### Guardrail Architecture
 ```kotlin
+// Guardrail implementation with Quarkus CDI injection
 @ApplicationScoped
 class AirlineLoyaltyInputGuardrail @Inject constructor(
     private val chatModel: ChatModel // Quarkus-managed ChatModel
@@ -51,39 +53,52 @@ class AirlineLoyaltyInputGuardrail @Inject constructor(
         val answer = chatModel.chat(validationPrompt).trim().uppercase()
         
         if (answer.startsWith("YES")) {
-            success()
+            success() // Interface default method
         } else {
-            fatal(REJECTION_MESSAGE)
+            fatal(REJECTION_MESSAGE) // Interface default method
         }
     }
 }
+
+// AI Service with declarative guardrails
+@RegisterAiService
+@ApplicationScoped
+@InputGuardrails(AirlineLoyaltyInputGuardrail::class) // Annotation-based!
+interface AirlineLoyaltyAssistant {
+    fun chat(@MemoryId memoryId: String, @UserMessage message: String): String
+}
 ```
 
-### Controller Integration
+### Controller Exception Handling
 ```kotlin
-@Inject lateinit var guardrail: AirlineLoyaltyInputGuardrail
-
-fun askQuestion(@FormParam("query") question: String): TemplateInstance {
-    val userMessage = dev.langchain4j.data.message.UserMessage.from(question)
-    val guardrailResult = guardrail.validate(userMessage)
+try {
+    val answer = assistant.chat(MEMORY_ID, question)
+    // Display answer...
+} catch (e: InputGuardrailException) {
+    // Extract friendly message from: "The guardrail <class> failed with this message: <msg>"
+    val friendlyMessage = e.message?.let { msg ->
+        val prefix = "failed with this message: "
+        val index = msg.indexOf(prefix)
+        if (index != -1) msg.substring(index + prefix.length) else msg
+    } ?: "Your question is not related to airline loyalty programs."
     
-    if (guardrailResult.result() != GuardrailResult.Result.SUCCESS) {
-        return error(guardrailResult.errorMessage())
-    }
-    
-    // Proceed to call assistant...
+    // Convert newlines to HTML <br> tags for proper display
+    val htmlFormattedMessage = friendlyMessage.replace("\n", "<br>")
+    // Display error with {error.raw} in Qute template
 }
 ```
 
 ## Critical Decisions
 
-### 1. Vanilla LangChain4j Guardrails (Not Quarkus-Specific)
-**Rationale**: Per project instructions, this is the "first (and probably the last) time you're clearly instructed by the documentation to favor langchain4j vanilla implementation over quarkus."
+### 1. Vanilla LangChain4j Guardrails (Quarkus Implementation Deprecated)
+**Rationale**: Quarkus LangChain4j guardrails are deprecated. Quarkus instructs users to use vanilla LangChain4j guardrails instead.
 
 - Uses vanilla `dev.langchain4j.guardrail.InputGuardrail` interface
-- Injects Quarkus-managed `ChatModel` for LLM invocation
-- Uses official helper methods: `success()` and `fatal(String)`
-- Manual integration in controller (not `@InputGuardrails` annotation)
+- Uses vanilla `dev.langchain4j.service.guardrail.@InputGuardrails` annotation
+- Uses vanilla `dev.langchain4j.guardrail.InputGuardrailException` for error handling
+- Injects Quarkus-managed `ChatModel` via CDI for LLM invocation
+- Uses interface default methods: `success()` and `fatal(String)`
+- Declarative integration via `@InputGuardrails` annotation on AI Service interface
 
 ### 2. LLM-Based Validation (Not Keyword Matching)
 **Rationale**: Original requirement was to "use LLM for determining weather the question is related or not."

@@ -3,6 +3,7 @@ package dev2next.langchain4j
 import dev.langchain4j.service.MemoryId
 import dev.langchain4j.service.SystemMessage
 import dev.langchain4j.service.UserMessage
+import dev.langchain4j.service.guardrail.InputGuardrails
 import io.quarkiverse.langchain4j.RegisterAiService
 import io.quarkiverse.langchain4j.mcp.runtime.McpToolBox
 import jakarta.enterprise.context.ApplicationScoped
@@ -15,12 +16,11 @@ import jakarta.enterprise.context.ApplicationScoped
  * Uses vanilla LangChain4j input guardrails to limit questions to airline loyalty topics only.
  * 
  * MCP tools are automatically discovered from the configured airline-tools MCP server.
- * 
- * NOTE: Guardrail integration will be done via AiServices builder in the controller,
- * as the annotation-based approach has compatibility issues between Quarkus and vanilla LangChain4j.
+ * Guardrails are applied via @InputGuardrails annotation (vanilla LangChain4j) and executed automatically.
  */
 @RegisterAiService
 @ApplicationScoped
+@InputGuardrails(AirlineLoyaltyInputGuardrail::class)
 interface AirlineLoyaltyAssistant {
 
     @SystemMessage(
