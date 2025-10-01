@@ -1,20 +1,93 @@
-# codepocalypse-langchain4j
+# Airline Loyalty Assistant
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+A demo application showcasing AI-powered airline loyalty program assistance using Quarkus, Kotlin, and LangChain4j.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## Features
 
-## Running the application in dev mode
+- 🤖 AI-powered question answering about airline loyalty programs
+- ✈️ Information about miles, rewards, and elite status
+- 🎨 Simple, clean web UI with server-side rendering
+- ⚡ Fast startup and hot reload with Quarkus
+- 🔧 Built with modern technology: Kotlin + Quarkus + LangChain4j
 
-You can run your application in dev mode that enables live coding using:
+## Prerequisites
 
-```shell script
+- Java 21+
+- Maven 3.9+ (or use the included wrapper)
+- OpenAI API key (get one at [OpenAI Platform](https://platform.openai.com/api-keys))
+
+## Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/jbaruch/Codepocalypse-dev2next-langchain4j.git
+   cd Codepocalypse-dev2next-langchain4j
+   ```
+
+2. **Configure your OpenAI API key**
+   
+   Create a `.env` file in the project root:
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env` and add your OpenAI API key:
+   ```
+   OPENAI_API_KEY=sk-your-actual-api-key-here
+   ```
+   
+   Or export it directly:
+   ```bash
+   export OPENAI_API_KEY=sk-your-actual-api-key-here
+   ```
+
+## Running the Application
+
+### Development Mode
+
+Run the application in dev mode with live coding enabled:
+
+```bash
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+The application will be available at: <http://localhost:8080>
 
-## Packaging and running the application
+> **Note:** Quarkus Dev UI is available at <http://localhost:8080/q/dev/>
+
+### Testing the Application
+
+1. Open your browser to <http://localhost:8080>
+2. Enter a question about airline loyalty programs, such as:
+   - "How can I earn elite status?"
+   - "What are the benefits of Gold tier membership?"
+   - "Can I transfer miles to family members?"
+3. Click "Ask Assistant" and wait for the AI response
+
+## Architecture
+
+This application follows the Quarkus LangChain4j programming model:
+
+- **`AirlineLoyaltyAssistant.kt`** - AI Service interface with `@RegisterAiService` annotation
+- **`AssistantController.kt`** - REST controller handling web requests
+- **`index.html`** - Qute template for server-side rendering
+- **`application.properties`** - Configuration for OpenAI and Quarkus
+
+## Demo Stages
+
+This project is organized into branches for different demo stages:
+
+- `stage-00-init` - Initial project setup
+- `stage-01-basic-chat` - Basic chatbot (current)
+- Future stages will add: tools, RAG, memory, etc.
+
+Switch between stages using:
+
+```bash
+git checkout stage-01-basic-chat
+```
+
+## Packaging and Running the Application
 
 The application can be packaged using:
 

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airline Loyalty Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .answer-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .answer-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .answer-content {
+            color: #555;
+            line-height: 1.7;
+            font-size: 1em;
+            white-space: pre-wrap;
+        }
+        
+        .error {
+            background: #fff3cd;
+            border-left: 4px solid #ff6b6b;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #721c24;
+        }
+        
+        .examples {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8eaf6;
+            border-radius: 10px;
+        }
+        
+        .examples h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .examples ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .examples li {
+            color: #555;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .examples li:before {
+            content: "✈";
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✈️ Airline Loyalty Assistant</h1>
+        <p class="subtitle">Ask me anything about airline loyalty programs, miles, and rewards!</p>
+        
+        <form method="post" action="/">
+            <div class="form-group">
+                <label for="question">Your Question:</label>
+                <textarea 
+                    id="question" 
+                    name="question" 
+                    rows="4" 
+                    placeholder="Example: How can I earn more miles on my next flight?"
+                    required>{question}</textarea>
+            </div>
+            
+            <button type="submit">Ask Assistant</button>
+        </form>
+        
+        {#if error}
+        <div class="error">
+            <strong>⚠️ Error:</strong> {error}
+        </div>
+        {/if}
+        
+        {#if answer}
+        <div class="answer-section">
+            <h2>💡 Answer:</h2>
+            <div class="answer-content">{answer}</div>
+        </div>
+        {/if}
+        
+        {#if !answer && !error}
+        <div class="examples">
+            <h3>Try asking about:</h3>
+            <ul>
+                <li>How do I earn elite status?</li>
+                <li>What are the benefits of Gold tier membership?</li>
+                <li>Can I transfer miles to family members?</li>
+                <li>How do I upgrade my seat using miles?</li>
+                <li>What partner airlines can I use my miles on?</li>
+            </ul>
+        </div>
+        {/if}
+        
+        <div class="footer">
+            Powered by Quarkus + Kotlin + LangChain4j
+        </div>
+    </div>
+</body>
+</html>
