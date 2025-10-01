@@ -18,6 +18,7 @@ class AssistantController {
     lateinit var assistant: AirlineLoyaltyAssistant
 
     @Inject
+    @io.quarkus.qute.Location("AssistantController/index.html")
     lateinit var index: Template
 
     /**
