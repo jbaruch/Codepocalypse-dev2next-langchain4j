@@ -135,6 +135,28 @@ src/main/
 3. Hot reload enabled - changes apply immediately
 4. Focus on making it WORK, not architecturally perfect
 
+### Known Issues & Workarounds
+
+**Quarkus Dev Mode NPE in VS Code Terminal**
+- **Issue**: When running `./mvnw quarkus:dev` in VS Code's background terminal, you may see:
+  ```
+  java.lang.NullPointerException: Cannot invoke "io.quarkus.deployment.dev.RuntimeUpdatesProcessor.doScan"
+  because "io.quarkus.deployment.dev.RuntimeUpdatesProcessor.INSTANCE" is null
+  ```
+- **Root Cause**: Quarkus interactive console conflicts with VS Code's terminal handling
+- **Impact**: Server starts successfully but crashes immediately after startup
+- **Workarounds**:
+  1. **Disable interactive console** (recommended for background execution):
+     ```bash
+     ./mvnw quarkus:dev -Dquarkus.console.enabled=false
+     ```
+  2. **Use nohup for persistent background execution**:
+     ```bash
+     nohup ./mvnw quarkus:dev -Dquarkus.console.enabled=false > /tmp/quarkus.log 2>&1 &
+     ```
+  3. **Run in external terminal**: Start dev mode in a separate terminal window outside VS Code
+- **Note**: This is a Quarkus framework bug, NOT an application code issue. Application functionality is unaffected.
+
 ## Copilot Usage Tips
 - Ask Copilot to check **Quarkus LangChain4j** docs (https://docs.quarkiverse.io/quarkus-langchain4j/dev/) via Context7 before implementing
 - Always specify "use Quarkus LangChain4j extension with CDI" to avoid vanilla patterns
