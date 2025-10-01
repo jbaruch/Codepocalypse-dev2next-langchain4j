@@ -51,6 +51,16 @@
             gap: 5px;
         }
         
+        .rag-badge {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .tip-text {
+            margin-top: 15px;
+            color: #667eea;
+            font-size: 0.95em;
+        }
+        
         .subtitle {
             color: #666;
             margin-bottom: 30px;
@@ -183,8 +193,9 @@
             {#if hasMemory}
             <span class="memory-badge">🧠 Memory Active</span>
             {/if}
+            <span class="memory-badge rag-badge">📚 RAG Enabled</span>
         </h1>
-        <p class="subtitle">I remember our conversation! Ask me anything about airline loyalty programs, miles, and rewards.</p>
+        <p class="subtitle">I have access to current Delta and United loyalty program information and remember our conversation!</p>
         
         <form method="post" action="/">
             <div class="form-group">
@@ -217,14 +228,14 @@
         <div class="examples">
             <h3>Try asking about:</h3>
             <ul>
-                <li>Hello, my name is Bob. How can I earn elite status?</li>
-                <li>What are the benefits of Gold tier membership?</li>
-                <li>Can I transfer miles to family members?</li>
-                <li>How do I upgrade my seat using miles?</li>
-                <li>What partner airlines can I use my miles on?</li>
+                <li>Hello, my name is Bob. What are the requirements for Delta Medallion status?</li>
+                <li>How do I qualify for United Premier Gold?</li>
+                <li>Compare the elite status requirements for Delta and United</li>
+                <li>What are the differences between Delta and United loyalty programs?</li>
+                <li>How does spending on co-branded credit cards count toward elite status?</li>
             </ul>
-            <p style="margin-top: 15px; color: #667eea; font-size: 0.95em;">
-                💡 <strong>Tip:</strong> I'll remember your name and preferences throughout our conversation!
+            <p class="tip-text">
+                💡 <strong>Tip:</strong> I have current information from Delta and United websites, and I'll remember our conversation!
             </p>
         </div>
         {/if}
