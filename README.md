@@ -25,21 +25,20 @@ A demo application showcasing AI-powered airline loyalty program assistance usin
    ```
 
 2. **Configure your OpenAI API key**
-   
-   Create a `.env` file in the project root:
+
+   Create a `.env` file in the project root (this file is git-ignored):
+
    ```bash
    cp .env.example .env
    ```
-   
-   Edit `.env` and add your OpenAI API key:
-   ```
-   OPENAI_API_KEY=sk-your-actual-api-key-here
-   ```
-   
-   Or export it directly:
+
+   Edit `.env` and replace the placeholder with your actual OpenAI API key:
+
    ```bash
-   export OPENAI_API_KEY=sk-your-actual-api-key-here
+   OPENAI_API_KEY=sk-proj-your-actual-openai-api-key-here
    ```
+
+   > **Note:** The `.env` file is automatically loaded by Quarkus and is included in `.gitignore` to prevent accidentally committing your API keys.
 
 ## Running the Application
 
