@@ -8,12 +8,16 @@ import io.quarkiverse.langchain4j.mcp.runtime.McpToolBox
 import jakarta.enterprise.context.ApplicationScoped
 
 /**
- * AI Service for airline loyalty program assistance with conversation memory and MCP tools.
+ * AI Service for airline loyalty program assistance with conversation memory, MCP tools, and guardrails.
  * Uses Quarkus LangChain4j with CDI to provide AI-powered responses.
  * Maintains conversation history to provide contextual, personalized assistance.
  * Uses MCP (Model Context Protocol) to fetch current information from airline websites.
+ * Uses vanilla LangChain4j input guardrails to limit questions to airline loyalty topics only.
  * 
  * MCP tools are automatically discovered from the configured airline-tools MCP server.
+ * 
+ * NOTE: Guardrail integration will be done via AiServices builder in the controller,
+ * as the annotation-based approach has compatibility issues between Quarkus and vanilla LangChain4j.
  */
 @RegisterAiService
 @ApplicationScoped

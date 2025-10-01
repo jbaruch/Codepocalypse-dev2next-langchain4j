@@ -194,8 +194,10 @@
             <span class="memory-badge">🧠 Memory Active</span>
             {/if}
             <span class="memory-badge rag-badge">&#x2699;&#xFE0F; MCP Enabled</span>
+            <span class="memory-badge" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🏠 Local Model</span>
+            <span class="memory-badge" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">🛡️ Guardrails</span>
         </h1>
-        <p class="subtitle">I use Model Context Protocol to fetch real-time Delta and United loyalty program information and remember our conversation!</p>
+        <p class="subtitle">Running on Docker Model Runner (Mistral 7B) with guardrails! I fetch real-time airline data via MCP, remember our conversation, and only answer airline loyalty questions.</p>
         
         <form method="post" action="/">
             <div class="form-group">
@@ -235,7 +237,7 @@
                 <li>How does spending on co-branded credit cards count toward elite status?</li>
             </ul>
             <p class="tip-text">
-                💡 <strong>Tip:</strong> I fetch real-time information from airline websites using MCP tools, and I'll remember our conversation!
+                💡 <strong>Tip:</strong> I fetch real-time information from airline websites using MCP tools, and I'll remember our conversation! I'm running locally via Docker Model Runner (Mistral 7B) with guardrails to keep conversations focused on airline loyalty topics.
             </p>
         </div>
         {/if}
@@ -252,7 +254,7 @@
         {/if}
         
         <div class="footer">
-            Powered by Quarkus + Kotlin + LangChain4j + MCP
+            Powered by Quarkus + Kotlin + LangChain4j + Docker Model Runner (Mistral 7B) + MCP + Guardrails
         </div>
     </div>
 </body>

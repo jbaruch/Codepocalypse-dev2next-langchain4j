@@ -46,9 +46,21 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-qute</artifactId>
         </dependency>
+        <!-- AI Model Dependencies -->
+        <!-- Using OpenAI client to connect to Docker Model Runner (OpenAI-compatible API) -->
         <dependency>
             <groupId>io.quarkiverse.langchain4j</groupId>
             <artifactId>quarkus-langchain4j-openai</artifactId>
+        </dependency>
+        <!-- Vanilla LangChain4j Core for Guardrails -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-core</artifactId>
+        </dependency>
+        <!-- Vanilla LangChain4j OpenAI for ChatLanguageModel -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-open-ai</artifactId>
         </dependency>
         <!-- MCP Dependencies -->
         <dependency>

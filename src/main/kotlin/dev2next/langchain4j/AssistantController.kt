@@ -19,6 +19,9 @@ class AssistantController {
     lateinit var assistant: AirlineLoyaltyAssistant
 
     @Inject
+    lateinit var guardrail: AirlineLoyaltyInputGuardrail
+
+    @Inject
     @io.quarkus.qute.Location("AssistantController/index.html")
     lateinit var index: Template
 
@@ -59,6 +62,23 @@ class AssistantController {
         }
 
         return try {
+            // First, validate with guardrail
+            val userMessage = dev.langchain4j.data.message.UserMessage.from(question)
+            val guardrailResult = guardrail.validate(userMessage)
+            
+            // Check if guardrail rejected the input (check for success)
+            val result = guardrailResult.result()
+            if (result != dev.langchain4j.guardrail.GuardrailResult.Result.SUCCESS) {
+                Log.warn("Guardrail rejected question")
+                // Get the failure message from the result
+                val errorMessage = guardrailResult.successfulText() 
+                    ?: "Your question is not related to airline loyalty programs."
+                return index.data("question", question)
+                    .data("answer", "")
+                    .data("error", errorMessage)
+                    .data("hasMemory", true)
+            }
+            
             Log.info("Processing question with memory: ${question.take(50)}...")
             // Pass memory ID to maintain conversation context
             val answer = assistant.chat(MEMORY_ID, question)
