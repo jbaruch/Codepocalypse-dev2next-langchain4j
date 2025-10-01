@@ -27,8 +27,15 @@ class AirlineMcpTools {
         Log.info("Fetching Delta Medallion qualification information")
         return try {
             val doc = Jsoup.connect(DELTA_URL)
-                .userAgent("Mozilla/5.0 (compatible; AirlineLoyaltyBot/1.0)")
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                .header("Accept-Language", "en-US,en;q=0.9")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Connection", "keep-alive")
+                .header("Upgrade-Insecure-Requests", "1")
+                .referrer("https://www.google.com/")
                 .timeout(30000)
+                .followRedirects(true)
                 .get()
 
             val text = doc.body().text()
@@ -61,8 +68,15 @@ class AirlineMcpTools {
         Log.info("Fetching United Premier qualification information")
         return try {
             val doc = Jsoup.connect(UNITED_URL)
-                .userAgent("Mozilla/5.0 (compatible; AirlineLoyaltyBot/1.0)")
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                .header("Accept-Language", "en-US,en;q=0.9")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Connection", "keep-alive")
+                .header("Upgrade-Insecure-Requests", "1")
+                .referrer("https://www.google.com/")
                 .timeout(30000)
+                .followRedirects(true)
                 .get()
 
             val text = doc.body().text()
