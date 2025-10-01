@@ -2,7 +2,7 @@
 
 ## What Was Created
 
-Created comprehensive, battle-tested instruction files for each stage that include all lessons learned, issues discovered, and solutions implemented.
+Created comprehensive, battle-tested instruction files for each stage that include all lessons learned, issues discovered, and solutions implemented. Now includes Stage 04 with MCP integration.
 
 ## Files Created
 
@@ -186,16 +186,78 @@ All answers documented in the instruction files.
 ✅ **Learning**: Explains WHY, not just WHAT
 ✅ **Organization**: Right instructions on right branches
 
+### 4. stage04-instructions.md (472 lines) ✨ NEW
+
+**Location:** Root directory and `stage-04-mcp` branch
+
+**Content:**
+- Complete MCP (Model Context Protocol) integration guide
+- Replacing RAG with real-time data fetching
+- MCP server tool creation with `@Tool` annotations
+- MCP client configuration with Quarkus LangChain4j
+- Docker image building and deployment
+- Testing with MCP Inspector
+- Comprehensive troubleshooting
+
+**Key Sections:**
+- Add MCP Dependencies (server-sse + langchain4j-mcp)
+- Create MCP Server Tools (Jsoup web scraping)
+- Configure MCP Client (HTTP/SSE transport)
+- Update AI Service with @McpToolBox annotation
+- Remove RAG Components
+- Update UI for MCP badges
+- Build and Test
+- Docker Image Creation
+- Push to Docker Hub
+- Troubleshooting (McpToolBox import, configuration, tools)
+- Verification Checklist
+
+**Critical Details:**
+- `@McpToolBox` import path: `io.quarkiverse.langchain4j.mcp.runtime.McpToolBox`
+- Client-scoped configuration keys required
+- Same application hosts both MCP server and client
+- Character limits to prevent token overflow
+- Web scraping with 30-second timeouts
+
+### 5. STAGE-04-SUMMARY.md (365 lines) ✨ NEW
+
+**Location:** Root directory and `stage-04-mcp` branch
+
+**Content:**
+- Comprehensive overview of MCP integration
+- Architecture details (server + client in same app)
+- Implementation details and code examples
+- Benefits over RAG approach
+- Docker deployment documentation
+- Performance considerations
+- Troubleshooting guide
+- Comparison with Stage 03
+
+**Key Sections:**
+- What Changed (added/modified/deleted files)
+- Architecture (MCP server + client + tools)
+- Available Tools (Delta, United, comparison)
+- Key Implementation Details (Jsoup, annotations)
+- Benefits Over RAG (real-time, no embedding, simpler)
+- Testing the MCP Server (Inspector, manual)
+- Docker Deployment (images on Docker Hub)
+- Dependencies Added (with versions)
+- Troubleshooting (import issues, configuration)
+- Performance Considerations
+- Future Enhancements
+- Comparison: Stage 03 vs Stage 04
+
 ## Pattern for Future Stages
 
-When implementing Stage 02+, follow this pattern:
+When implementing new stages, follow this established pattern:
 
-1. **Implement the stage** - Code and test
-2. **Document issues** - As they happen
-3. **Create stageXX-instructions.md** - With all learnings
-4. **Add to main** - Complete reference
-5. **Add to stage branch** - Specific guidance
-6. **Create STAGE-XX-SUMMARY.md** - What was accomplished
+1. **Implement the stage** - Code and test thoroughly
+2. **Document issues** - As they happen (in real-time)
+3. **Create stageXX-instructions.md** - Step-by-step with all learnings
+4. **Create STAGE-XX-SUMMARY.md** - Overview of what was accomplished
+5. **Add to main** - Complete reference documentation
+6. **Add to stage branch** - Specific guidance for that stage
+7. **Update INSTRUCTION-FILES-SUMMARY.md** - Document the documentation
 
 ## Key Learnings About Documentation
 
@@ -206,16 +268,25 @@ When implementing Stage 02+, follow this pattern:
 5. **Make it actionable** - Every instruction should be executable
 6. **Link to external docs** - Context7 for Quarkus LangChain4j docs
 
-## Next Steps
+## Current Status
 
-Ready for **Stage 02: Function Calling/Tools** with confidence that:
-- Stage 00 and 01 are fully documented
-- Future developers can reproduce our work
-- Lessons learned are captured
-- Pattern established for documenting future stages
+✅ **All Stages Documented** (Stage 00 → Stage 04):
+- Stage 00: Project initialization
+- Stage 01: Basic chat with memory
+- Stage 02: Function calling/tools
+- Stage 03: RAG implementation
+- Stage 04: MCP integration + Docker deployment
+
+**Documentation Pattern Established**:
+- Each stage has step-by-step instructions
+- Each stage has comprehensive summary
+- All issues and solutions documented
+- Verification checklists included
+- Docker deployment instructions
 
 ---
 
-**Total Documentation**: 841+ lines of comprehensive, battle-tested instructions
+**Total Documentation**: 2,100+ lines of comprehensive, battle-tested instructions
 **Time Saved**: Hours of debugging for future implementations
-**Knowledge Preserved**: All issues, solutions, and rationale documented
+**Knowledge Preserved**: All issues, solutions, and rationale documented across 4 complete stages
+**Docker Images**: Published and documented on Docker Hub
